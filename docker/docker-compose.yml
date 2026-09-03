@@ -1,0 +1,28 @@
+name: web_assistant
+
+services:
+  db:
+    image: pgvector/pgvector:pg16   # PostgreSQL 16 with pgvector extension enabled
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}          # Database name
+      - POSTGRES_USER=${POSTGRES_USER}      # Database user
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}  # Database password
+
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data 
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+volumes:
+  postgres-data:
