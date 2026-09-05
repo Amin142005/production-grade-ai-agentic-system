@@ -220,3 +220,4 @@ __marimo__/
 !.env.example
 
 /storage/logs
+alembic.ini
