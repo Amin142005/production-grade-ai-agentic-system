@@ -182,7 +182,7 @@ class Settings(BaseSettings):
     APP_ENV: Environment = Field(...)
     PROJECT_NAME: str = Field(..., max_length=100)
     VERSION: str = Field(...)
-    DEBUG: Optional[bool] = Field(default=None)
+    API_VERSION: str = Field(...)
     PROJECT_ROOT: str = Field(...)
     
     
