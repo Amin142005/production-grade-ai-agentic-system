@@ -3,7 +3,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
-# from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse
 
 from api.v1 import v1_router
 from config.settings import setting
@@ -22,7 +22,7 @@ async def lifespan(app: FastAPI):
         api_version=setting.API_VERSION,
     )
 
-    # await db_manager.check_connection()
+    await db_manager.check_connection()
     logger.info("database_connection_successful")
 
     try:
@@ -41,3 +41,17 @@ app = FastAPI(
 )
 
 app.include_router(v1_router)
+
+
+@app.exception_handler(ConnectionRefusedError)
+async def connection_refused_handler(request: Request, _exc: ConnectionRefusedError):
+    """Log the error and return 503 when the database connection is refused."""
+    logger.exception(
+        "database_error",
+        path=request.url.path,
+        method=request.method,
+    )
+    return JSONResponse(
+        status_code=503,
+        content={"detail": "Service temporarily unavailable."},
+    )
