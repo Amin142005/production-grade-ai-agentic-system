@@ -182,7 +182,7 @@ class Settings(BaseSettings):
     APP_ENV: Environment = Field(...)
     PROJECT_NAME: str = Field(..., max_length=100)
     VERSION: str = Field(...)
-    DEBUG: Optional[bool] = Field(default=None)
+    API_VERSION: str = Field(...)
     PROJECT_ROOT: str = Field(...)
     
     
@@ -208,6 +208,16 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str = Field(...)
     POSTGRES_POOL_SIZE: int = Field(...)
     POSTGRES_MAX_OVERFLOW: int = Field(...)
+    
+    
+    
+    # ==========================
+    # JWT Settings
+    # ==========================
+    JWT_SECRET_KEY: str = Field(...)
+    JWT_ALGORITHM: str = Field(default="HS256")
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(...)
+    JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = Field(...)
     
     
     model_config = SettingsConfigDict(env_file=ENV_FILE, env_file_encoding="utf-8")
